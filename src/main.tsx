@@ -122,7 +122,7 @@ Devvit.addCustomPostType({
               alignment="bottom center"
               width={"100%"}
             > 
-            <vstack padding='small' border='thin' borderColor='white' width={"200px"} alignment='center'>
+            <vstack padding='small' border='thin' borderColor='white' width={"200px"} alignment='center' onPress={onShowWebviewClick}>
                 <PixelText size={1.5}>Start</PixelText>
               </vstack>
               <spacer />

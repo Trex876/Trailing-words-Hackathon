@@ -1,37 +1,66 @@
 class App {
     constructor() {
       
-        
         const wordCanvas = document.getElementById('wordCanvas');
         const wordCtx = setupCanvasScaling(wordCanvas);
         
         const fogCanvas = document.getElementById('fogCanvas');
         const fogCtx = setupCanvasScaling(fogCanvas);
           
-          let word = ""; 
-          const placedChars = [];
-          const charPadding = 10;
-          const revealRadius = 30; 
-          let totalWhiteChars = 0;
-          let timerId; 
-          let gamePhase = 0; 
-          const phaseTimers = [5, 30]; //5 second first phase and 30 second 2nd phase diffulcty control varible
-          
-          getRandomWord().then(Word => {
-            if (Word) {
-                word = Word.trim().toUpperCase();// difficulty control varible lenght of the word 
-                init();
-            } 
-          });
+        let word = ""; 
+        const placedChars = [];
+        const charPadding = 10;
+        let totalWhiteChars = 0;
+        let timerId; 
+        let gamePhase = 0; 
+        let phaseTimers = [10, 30]; //5 second first phase and 30 second 2nd phase diffulcty control varible
+        let wordLength = 4
+        let fogOpacityRange = [0.5, 0.8]
+        let revealRadius = 30; 
+        let difficultyLevel = 0;
+        let consecutiveWins = false;
+
+        getRandomWord().then(Word => {
+        if (Word) {
+            word = Word.trim().toUpperCase();// difficulty control varible lenght of the word 
+            init();
+        } 
+        });
         
+        function increaseDifficulty() {  
+            difficultyLevel++;
+            consecutiveWins++;
+        
+            wordLength = Math.min(wordLength + 1, 10); 
+            fogOpacityRange = [fogOpacityRange[0] + 0.05, fogOpacityRange[1] + 0.05]; 
+            fogOpacityRange = fogOpacityRange.map(opacity => Math.min(opacity, 1)); 
+            revealRadius = Math.max(revealRadius - 5, 10); 
+            phaseTimers = phaseTimers.map(timer => Math.max(timer - 2, 5)); 
+        }
+        
+
+        function resetDifficulty() {
+            difficultyLevel = 0;
+            consecutiveWins = 0; 
+        
+            wordLength = 4; 
+            fogOpacityRange = [0.5, 0.8]; 
+            revealRadius = 30; 
+            phaseTimers = [10, 30]; 
+        }
         
         async function getRandomWord() {
-            const words = await loadWords();
-            if (words.length > 0) {
-              const randomIndex = Math.floor(Math.random() * words.length);
-              return words[randomIndex];
+            const words = await loadWords(); 
+            const filteredWords = words.filter(word => word.trim().length === wordLength);
+            
+            if (filteredWords.length > 0) {
+                const randomIndex = Math.floor(Math.random() * filteredWords.length);
+                return filteredWords[randomIndex];
             }
-          }
+            
+            console.warn(`No words found matching length ${wordLength}.`);
+            return null; 
+        }
         
           async function loadWords() {
             try {
@@ -121,7 +150,7 @@ class App {
             word = "";
             placedChars.length = 0; 
             totalWhiteChars = 0;
-        
+
             const incompleteWordContainer = document.getElementById('incompleteWord');
             incompleteWordContainer.innerHTML = "";
         
@@ -154,6 +183,11 @@ class App {
         
         function endGame(success) {
             clearInterval(timerId); 
+            if(success){
+                increaseDifficulty();
+            } else{
+                resetDifficulty()
+            }
             resetGame();  
         }
         
@@ -171,10 +205,13 @@ class App {
                     clearInterval(timerId);
         
                     if (phase === 0) {
-                        const anyGreenChars = placedChars.some(char => char.charColor === 'rgba(0, 255, 0)');
-                        if (anyGreenChars) {
+                        const anyGreenChars = placedChars.filter(char => char.charColor === 'rgba(0, 255, 0)');
+                        if (anyGreenChars && anyGreenChars.length < wordLength) {
                             startWordAssemblyPhase(); 
-                        } else {
+                        } else if(anyGreenChars.length === wordLength){
+                            endGame(true)
+                        } 
+                        else {
                             endGame(false); 
                         }
                     } else {
@@ -220,7 +257,6 @@ class App {
             fogCtx.clearRect(0, 0, fogCanvas.width, fogCanvas.height);
         
             const cellSize = 30; 
-            const fogOpacityRange = [0.5, 0.8]; //difficulty control variable
             const circleSizeRange = [20, 50]; 
         
             for (let x = 0; x < fogCanvas.width; x += cellSize) {
