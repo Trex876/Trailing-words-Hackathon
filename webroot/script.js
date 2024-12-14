@@ -19,6 +19,7 @@ class App {
         let revealRadius = 30; 
         let difficultyLevel = 0;
         let consecutiveWins = false;
+        let consecutiveWinCount = 0;
 
         getRandomWord().then(Word => {
         if (Word) {
@@ -30,12 +31,14 @@ class App {
         function increaseDifficulty() {  
             difficultyLevel++;
             consecutiveWins++;
-        
-            wordLength = Math.min(wordLength + 1, 10); 
-            fogOpacityRange = [fogOpacityRange[0] + 0.05, fogOpacityRange[1] + 0.05]; 
-            fogOpacityRange = fogOpacityRange.map(opacity => Math.min(opacity, 1)); 
-            revealRadius = Math.max(revealRadius - 5, 10); 
-            phaseTimers = phaseTimers.map(timer => Math.max(timer - 2, 5)); 
+            
+            if(consecutiveWinCount % 3 === 0){
+                wordLength = Math.min(wordLength + 1, 10); 
+                fogOpacityRange = [fogOpacityRange[0] + 0.05, fogOpacityRange[1] + 0.05]; 
+                fogOpacityRange = fogOpacityRange.map(opacity => Math.min(opacity, 1)); 
+                revealRadius = Math.max(revealRadius - 5, 10); 
+                phaseTimers = phaseTimers.map(timer => Math.max(timer - 2, 5)); 
+            }
         }
         
 
@@ -185,8 +188,10 @@ class App {
             clearInterval(timerId); 
             if(success){
                 increaseDifficulty();
+                consecutiveWinCount++;
             } else{
                 resetDifficulty()
+                consecutiveWinCount = 0;
             }
             resetGame();  
         }

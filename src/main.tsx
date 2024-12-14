@@ -42,6 +42,15 @@ Devvit.addCustomPostType({
     const [showTable, setShowTable] = useState(false);
     const [showHow, setShowHow] = useState(false);
     const [webviewVisible, setWebviewVisible] = useState(false);
+    const [isPressed, setIsPressed] = useState(false);
+
+    const handlePress = () => {
+      setIsPressed(true);
+      onShowWebviewClick();
+      setTimeout(() => {
+        setIsPressed(false);
+      }, 1000);
+    };
 
     const onMessage = async (msg: WebViewMessage) => {
       switch (msg.type) {
@@ -122,9 +131,16 @@ Devvit.addCustomPostType({
               alignment="bottom center"
               width={"100%"}
             > 
-            <vstack padding='small' border='thin' borderColor='white' width={"200px"} alignment='center' onPress={onShowWebviewClick}>
-                <PixelText size={1.5}>Start</PixelText>
-              </vstack>
+            <vstack
+              padding="small"
+              border={isPressed ? 'thick' : 'thin'}
+              borderColor={isPressed ? 'blue' : 'white'} 
+              width={"200px"}
+              alignment="center"
+              onPress={handlePress}
+            >
+              <PixelText size={1.5}>Start</PixelText>
+            </vstack>
               <spacer />
               <vstack padding='small' border='thin' borderColor='white' width={"200px"} alignment='center' onPress={() => setShowHow(true)}>
               <PixelText size={1.5}>How to Play</PixelText>
