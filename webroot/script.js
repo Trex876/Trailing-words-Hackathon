@@ -15,11 +15,11 @@ class App {
           let totalWhiteChars = 0;
           let timerId; 
           let gamePhase = 0; 
-          const phaseTimers = [5, 30]; 
+          const phaseTimers = [5, 30]; //5 second first phase and 30 second 2nd phase diffulcty control varible
           
           getRandomWord().then(Word => {
             if (Word) {
-                word = Word.trim().toUpperCase();
+                word = Word.trim().toUpperCase();// difficulty control varible lenght of the word 
                 init();
             } 
           });
@@ -338,9 +338,16 @@ class App {
         
         function increaseConfidenceBar() {
             const confidenceBar = document.querySelector('.confidence-bar');
+            const confidenceBarContainer = document.querySelector('.confidence-bar-container');
+
             if (totalWhiteChars > 0) {
                 const percentage = (1 - (totalWhiteChars / word.length)) * 100;
                 confidenceBar.style.height = `${percentage}%`;
+                confidenceBarContainer.classList.add('shake');
+
+                 setTimeout(() => {
+              confidenceBarContainer.classList.remove('shake');
+            }, 500); 
             }
             totalWhiteChars--;
         }
