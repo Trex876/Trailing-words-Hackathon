@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Trail of Words</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="heading-bar">
+            <div id="timerDisplay" class="timer-display"></div>
+            <div id="incompleteWord" class="incomplete-word-container"></div>
+            <button id="backspaceButton" class="backspace-button">BACKSPACE</button>
+        </div>
+        <div id="contentArea" class="content-area">
+            <div class="canvas-area">
+                <canvas id="wordCanvas" width="800" height="500" ></canvas>
+                <canvas id="fogCanvas" width="800" height="500" ></canvas>
+            </div>
+            <div class="confidence-area">
+                <div class="confidence-bar-container">
+                    <div class="confidence-bar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
