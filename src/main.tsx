@@ -1,15 +1,16 @@
 import './createPost.js';
 
 import { Devvit, useState } from '@devvit/public-api';
+import { PixelText } from './PixelText.js';
+import { LeaderBoard } from './table.js';
+import { HowToPlay } from './howtoplay.js';
 
-// Defines the messages that are exchanged between Devvit and Web View
 type WebViewMessage =
   | {
       type: 'initialData';
       data: { username: string; currentCounter: number };
     }
-    |
-    {
+  | {
       type: 'setCounter';
       data: { newCounter: number };
     }
@@ -19,7 +20,6 @@ type WebViewMessage =
     };
 
 Devvit.configure({
-  http:true,
   redditAPI: true,
   redis: true,
 });
@@ -29,22 +29,20 @@ Devvit.addCustomPostType({
   name: 'Webview Example',
   height: 'tall',
   render: (context) => {
-    // Load username with `useAsync` hook
     const [username] = useState(async () => {
       const currUser = await context.reddit.getCurrentUser();
       return currUser?.username ?? 'anon';
     });
 
-    // Load latest counter from redis with `useAsync` hook
     const [counter, setCounter] = useState(async () => {
       const redisCount = await context.redis.get(`counter_${context.postId}`);
       return Number(redisCount ?? 0);
     });
 
-    // Create a reactive state for web view visibility
+    const [showTable, setShowTable] = useState(false);
+    const [showHow, setShowHow] = useState(false);
     const [webviewVisible, setWebviewVisible] = useState(false);
 
-    // When the web view invokes `window.parent.postMessage` this function is called
     const onMessage = async (msg: WebViewMessage) => {
       switch (msg.type) {
         case 'setCounter':
@@ -57,14 +55,15 @@ Devvit.addCustomPostType({
           });
           setCounter(msg.data.newCounter);
           break;
-
+        case 'initialData':
+        case 'updateCounter':
+          break;
 
         default:
           throw new Error(`Unknown message type: ${msg satisfies never}`);
       }
     };
 
-    // When the button is clicked, send initial data to web view and show it
     const onShowWebviewClick = () => {
       setWebviewVisible(true);
       context.ui.webView.postMessage('myWebView', {
@@ -76,49 +75,67 @@ Devvit.addCustomPostType({
       });
     };
 
-    // Render the custom post type
-    return (
-      <vstack grow padding="small">
-        <vstack
-          grow={!webviewVisible}
-          height={webviewVisible ? '0%' : '100%'}
-          alignment="middle center"
-        >
-          <text size="xlarge" weight="bold">
-            Example App
-          </text>
-          <spacer />
-          <vstack alignment="start middle">
-            <hstack>
-              <text size="medium">Username:</text>
-              <text size="medium" weight="bold">
-                {' '}
-                {username ?? ''}
-              </text>
-            </hstack>
-            <hstack>
-              <text size="medium">Current counter:</text>
-              <text size="medium" weight="bold">
-                {' '}
-                {counter ?? ''}
-              </text>
-            </hstack>
-          </vstack>
-          <spacer />
-          <button onPress={onShowWebviewClick}>Launch App</button>
-        </vstack>
-        <vstack grow={webviewVisible} height={webviewVisible ? '100%' : '0%'}>
-          <vstack border="thick" borderColor="black" height={webviewVisible ? '100%' : '0%'}>
+    if(webviewVisible){
+      return(
+        <vstack grow={webviewVisible} height={'100%'}>
+          <vstack border="thick" borderColor="black" height={'100%'}>
             <webview
               id="myWebView"
               url="page.html"
               onMessage={(msg) => onMessage(msg as WebViewMessage)}
               grow
-              height={webviewVisible ? '100%' : '0%'}
+              height={'100%'}
             />
           </vstack>
         </vstack>
-      </vstack>
+      )
+    }
+
+    if(showTable) return <LeaderBoard />
+    if(showHow) return <HowToPlay/>
+    return (
+      <zstack >
+          <image
+            imageHeight={1024}
+            imageWidth={1500}
+            height="100%"
+            width="100%"
+            url='stars2.gif'
+            description="striped blue background"
+            resizeMode="cover"
+          />
+          <vstack grow padding="large"  alignment='top center'  height={"100%"}  width={"100%"} >
+            <spacer/>
+            <spacer/>
+            <spacer/>
+            <spacer/>
+            <vstack width='100%' alignment='middle center' gap='none' padding='large'>
+              <PixelText size={6}>BlindGuess</PixelText>
+            </vstack>
+            <spacer/>
+            <spacer/>
+            <spacer/>
+            <spacer/>
+            <vstack
+              grow={!webviewVisible}
+              gap={"small"}
+              alignment="bottom center"
+              width={"100%"}
+            > 
+            <vstack padding='small' border='thin' borderColor='white' width={"200px"} alignment='center'>
+                <PixelText size={1.5}>Start</PixelText>
+              </vstack>
+              <spacer />
+              <vstack padding='small' border='thin' borderColor='white' width={"200px"} alignment='center' onPress={() => setShowHow(true)}>
+              <PixelText size={1.5}>How to Play</PixelText>
+              </vstack>
+              <spacer/>
+              <vstack padding='small' border='thin' borderColor='white' width={"200px"} alignment='center' onPress={() => setShowTable(true)}>
+              <PixelText size={1.5}>LeaderBoard</PixelText>
+              </vstack>
+            </vstack>
+        </vstack>
+      </zstack>
     );
   },
 });

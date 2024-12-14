@@ -5,7 +5,6 @@ Devvit.configure({
   redditAPI: true,
 });
 
-// Adds a new menu item to the subreddit allowing to create a new post
 Devvit.addMenuItem({
   label: 'Create Trailing Words post',
   location: 'subreddit',
