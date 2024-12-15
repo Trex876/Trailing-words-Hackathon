@@ -20,6 +20,7 @@ class App {
         let difficultyLevel = 0;
         let consecutiveWins = false;
         let consecutiveWinCount = 0;
+        let score = 0;
 
         getRandomWord().then(Word => {
         if (Word) {
@@ -28,6 +29,12 @@ class App {
         } 
         });
         
+
+        function updateScoreDisplay() {
+            const scoreElement = document.getElementById('scoreDisplay');
+            scoreElement.textContent = `Score: ${score}`;
+        }
+
         function increaseDifficulty() {  
             difficultyLevel++;
             consecutiveWins++;
@@ -189,6 +196,8 @@ class App {
             if(success){
                 increaseDifficulty();
                 consecutiveWinCount++;
+                score += 5; 
+                updateScoreDisplay();
             } else{
                 resetDifficulty()
                 consecutiveWinCount = 0;
