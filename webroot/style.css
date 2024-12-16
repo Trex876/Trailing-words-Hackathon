@@ -196,7 +196,7 @@ canvas {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
   margin-bottom: 5px;
-  color: white;
+  color: rgba(238, 202, 0, 0.897);
   font-weight: bold;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
 }

@@ -16,7 +16,7 @@ class App {
         let phaseTimers = [10, 30]; //5 second first phase and 30 second 2nd phase diffulcty control varible
         let wordLength = 4
         let fogOpacityRange = [0.5, 0.8]
-        let revealRadius = 20; 
+        let revealRadius = 22; 
         let difficultyLevel = 0;
         let consecutiveWins = false;
         let consecutiveWinCount = 0;
@@ -39,11 +39,11 @@ class App {
             difficultyLevel++;
             consecutiveWins++;
             
-            if(consecutiveWinCount % 3 === 0){
+            if(consecutiveWinCount % 2 === 0){
                 wordLength = Math.min(wordLength + 1, 10); 
                 fogOpacityRange = [fogOpacityRange[0] + 0.05, fogOpacityRange[1] + 0.05]; 
                 fogOpacityRange = fogOpacityRange.map(opacity => Math.min(opacity, 1)); 
-                revealRadius = Math.max(revealRadius - 2, 10); 
+                revealRadius = Math.max(revealRadius - 2, 3); 
                 phaseTimers = phaseTimers.map(timer => Math.max(timer - 2, 5)); 
             }
         }
@@ -514,7 +514,6 @@ class App {
         window.addEventListener('load', handleResize);
         window.addEventListener('resize', handleResize);
         
-        updateGlowEffect();
     }
   }
 new App();
