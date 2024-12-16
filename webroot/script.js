@@ -16,7 +16,7 @@ class App {
         let phaseTimers = [10, 30]; //5 second first phase and 30 second 2nd phase diffulcty control varible
         let wordLength = 4
         let fogOpacityRange = [0.5, 0.8]
-        let revealRadius = 30; 
+        let revealRadius = 20; 
         let difficultyLevel = 0;
         let consecutiveWins = false;
         let consecutiveWinCount = 0;
@@ -43,7 +43,7 @@ class App {
                 wordLength = Math.min(wordLength + 1, 10); 
                 fogOpacityRange = [fogOpacityRange[0] + 0.05, fogOpacityRange[1] + 0.05]; 
                 fogOpacityRange = fogOpacityRange.map(opacity => Math.min(opacity, 1)); 
-                revealRadius = Math.max(revealRadius - 5, 10); 
+                revealRadius = Math.max(revealRadius - 2, 10); 
                 phaseTimers = phaseTimers.map(timer => Math.max(timer - 2, 5)); 
             }
         }
@@ -146,8 +146,21 @@ class App {
             }
         
             wordCtx.clearRect(0, 0, wordCanvas.width, wordCanvas.height);
+        
             placedChars.forEach(({ character, x, y, charColor }) => {
+                wordCtx.font = `bold ${scaledFontSize}px Arial`;
                 wordCtx.fillStyle = charColor;
+        
+                if (gamePhase === 1 && charColor === 'rgba(255, 255, 255)') {
+                    wordCtx.shadowColor = 'rgba(255, 255, 0, 0.8)';
+                    wordCtx.shadowBlur = 10; 
+                    wordCtx.shadowOffsetX = 0;
+                    wordCtx.shadowOffsetY = 0;
+                } else {
+                    wordCtx.shadowColor = 'transparent';
+                    wordCtx.shadowBlur = 0;
+                }
+        
                 wordCtx.fillText(character, x + charPadding, y + scaledFontSize / 2);
             });
         }
@@ -206,35 +219,35 @@ class App {
         }
         
         
-        function startTimer(phase) {
-            let countdown = phaseTimers[phase];
-            const timerDisplay = document.getElementById('timerDisplay');
+    function startTimer(phase) {
+        let countdown = phaseTimers[phase];
+        const timerDisplay = document.getElementById('timerDisplay');
+        timerDisplay.textContent = `Time left: ${countdown} seconds`;
+
+        clearInterval(timerId);
+
+        timerId = setInterval(() => {
+            countdown--;
             timerDisplay.textContent = `Time left: ${countdown} seconds`;
-        
-            timerId = setInterval(() => {
-                countdown--;
-                timerDisplay.textContent = `Time left: ${countdown} seconds`;
-        
-                if (countdown < 0) {
-                    clearInterval(timerId);
-        
-                    if (phase === 0) {
-                        const anyGreenChars = placedChars.filter(char => char.charColor === 'rgba(0, 255, 0)');
-                        if (anyGreenChars && anyGreenChars.length < wordLength) {
-                            startWordAssemblyPhase(); 
-                        } else if(anyGreenChars.length === wordLength){
-                            endGame(true)
-                        } 
-                        else {
-                            endGame(false); 
-                        }
+
+            const allGreen = placedChars.every(char => char.charColor === 'rgba(0, 255, 0)');
+
+            if (countdown < 0 || (phase === 0 && allGreen)) {
+                clearInterval(timerId);
+
+                if (phase === 0) {
+                    if (allGreen) {
+                        endGame(true); 
                     } else {
-                        endGame(false); 
+                        startWordAssemblyPhase(); 
                     }
+                } else {
+                    endGame(false); 
                 }
-            }, 1000);
-        }
-        
+            }
+        }, 1000);
+}
+
         
         
         
@@ -501,7 +514,7 @@ class App {
         window.addEventListener('load', handleResize);
         window.addEventListener('resize', handleResize);
         
-        
+        updateGlowEffect();
     }
   }
 new App();
