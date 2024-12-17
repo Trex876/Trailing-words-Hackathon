@@ -26,7 +26,7 @@ Devvit.configure({
 
 // Add a custom post type to Devvit
 Devvit.addCustomPostType({
-  name: 'Webview Example',
+  name: 'Trailing Words',
   height: 'tall',
   render: (context) => {
     const [username] = useState(async () => {
