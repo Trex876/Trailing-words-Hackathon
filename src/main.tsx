@@ -101,7 +101,7 @@ Devvit.addCustomPostType({
     }
 
     if(showTable) return <LeaderBoard />
-    if(showHow) return <HowToPlay/>
+    if(showHow) return <HowToPlay setHowtoPlay={setShowHow}/>
     return (
       <zstack >
           <image
@@ -146,9 +146,7 @@ Devvit.addCustomPostType({
               <PixelText size={1.5}>How to Play</PixelText>
               </vstack>
               <spacer/>
-              <vstack padding='small' border='thin' borderColor='white' width={"200px"} alignment='center' onPress={() => setShowTable(true)}>
-              <PixelText size={1.5}>LeaderBoard</PixelText>
-              </vstack>
+            
             </vstack>
         </vstack>
       </zstack>

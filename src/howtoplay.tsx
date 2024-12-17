@@ -1,7 +1,7 @@
 import { Devvit } from '@devvit/public-api';
 import { PixelText } from './PixelText.js';
 
-export const HowToPlay = () => {
+export const HowToPlay = ({setHowtoPlay} : any) => {
   return (
     <zstack >
         <image
@@ -14,7 +14,14 @@ export const HowToPlay = () => {
         resizeMode="cover"
         />
         <vstack gap="medium" alignment="middle center" padding="large" width="100%">
-            <PixelText size={4}>How To Play</PixelText>
+            <hstack alignment="middle center" width="90%">
+                <vstack alignment='top start' gap='none' padding='large' onPress={() => setHowtoPlay(false)}>
+                    <PixelText size={4}>X</PixelText>
+                </vstack>
+                <vstack  alignment='top center' gap='none' padding='large'>
+                    <PixelText size={4}>How To Play</PixelText>
+                </vstack>            
+            </hstack>
             <vstack width="90%" gap="medium" borderColor="white" border="thin" cornerRadius="medium" padding="medium">
                 <vstack gap="small">
                 <PixelText size={2} >Step 1:</PixelText>
