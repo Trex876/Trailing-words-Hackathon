@@ -22,23 +22,28 @@ export const HowToPlay = ({setHowtoPlay} : any) => {
                     <PixelText size={4}>How To Play</PixelText>
                 </vstack>            
             </hstack>
-            <vstack width="90%" gap="medium" borderColor="white" border="thin" cornerRadius="medium" padding="medium">
+            <vstack width="100%" gap="medium" borderColor="white" border="thin" cornerRadius="medium" padding="medium">
                 <vstack gap="small">
                 <PixelText size={2} >Step 1:</PixelText>
                 <PixelText size={1.5}>
-                    Scratch the fog away with you mousbutton pressed to unhide the charcters before first timer runs out
+                    Scratch the fog away with you mousebutton pressed 
+                </PixelText>
+                <PixelText size={1.5}>
+                to unhide the characters before first timer runs out
                 </PixelText>
                 </vstack>
                 <vstack gap="small">
                 <PixelText size={2} >Step 2:</PixelText>
                 <PixelText size={1.5}>
-                    Piece together the remaining charcters with you mouse clicks before 2nd timer run out
+                    Piece together the remaining characters with your 
                 </PixelText>
-                </vstack>
-                <vstack gap="small">
+                <PixelText size={1.5}>mouse clicks before 2nd timer run out</PixelText>
                 <PixelText size={1.5}>
                     Note: as you score higher game will get difficult!
                 </PixelText>
+                </vstack>
+                <vstack gap="small">
+    
                 </vstack>
             </vstack>
         </vstack>
