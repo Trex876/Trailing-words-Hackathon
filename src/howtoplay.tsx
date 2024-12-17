@@ -19,31 +19,18 @@ export const HowToPlay = () => {
                 <vstack gap="small">
                 <PixelText size={2} >Step 1:</PixelText>
                 <PixelText size={1.5}>
-                    Navigate to the game page and select your desired mode of play.
+                    Scratch the fog away with you mousbutton pressed to unhide the charcters before first timer runs out
                 </PixelText>
                 </vstack>
                 <vstack gap="small">
                 <PixelText size={2} >Step 2:</PixelText>
                 <PixelText size={1.5}>
-                    Use the controls to move, aim, and interact with the game elements. Familiarize yourself with the controls before starting the game.
+                    Piece together the remaining charcters with you mouse clicks before 2nd timer run out
                 </PixelText>
                 </vstack>
                 <vstack gap="small">
-                <PixelText size={2} >Step 3:</PixelText>
                 <PixelText size={1.5}>
-                    Compete to achieve the highest score by completing objectives or defeating opponents.
-                </PixelText>
-                </vstack>
-                <vstack gap="small">
-                <PixelText size={2} >Step 4:</PixelText>
-                <PixelText size={1.5}>
-                    Keep track of your performance on the leaderboard and aim to improve your rank with each attempt.
-                </PixelText>
-                </vstack>
-                <vstack gap="small">
-                <PixelText size={2} >Tips:</PixelText>
-                <PixelText size={1.5}>
-                    Stay focused, practice regularly, and watch out for updates or new features to enhance your gameplay experience.
+                    Note: as you score higher game will get difficult!
                 </PixelText>
                 </vstack>
             </vstack>

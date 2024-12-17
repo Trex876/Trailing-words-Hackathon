@@ -22,6 +22,13 @@ class App {
         let consecutiveWinCount = 0;
         let score = 0;
 
+
+        function playSound(id) {
+            const sound = document.getElementById(id);
+            sound.currentTime = 0; 
+            sound.play();
+          }
+
         getRandomWord().then(Word => {
         if (Word) {
             word = Word.trim().toUpperCase();// difficulty control varible lenght of the word 
@@ -207,15 +214,17 @@ class App {
         function endGame(success) {
             clearInterval(timerId); 
             if(success){
+                playSound('successSound');
                 increaseDifficulty();
                 consecutiveWinCount++;
                 score += 5; 
-                updateScoreDisplay();
             } else{
                 resetDifficulty()
+                score = 0;
                 consecutiveWinCount = 0;
             }
             resetGame();  
+            updateScoreDisplay();
         }
         
         
@@ -229,6 +238,7 @@ class App {
         timerId = setInterval(() => {
             countdown--;
             timerDisplay.textContent = `Time left: ${countdown} seconds`;
+            playSound('clockTickSound');
 
             const allGreen = placedChars.every(char => char.charColor === 'rgba(0, 255, 0)');
 
@@ -353,6 +363,7 @@ class App {
         function backspaceLastLetter() {
             const incompleteWordContainer = document.getElementById('incompleteWord');
             const placeholders = incompleteWordContainer.querySelectorAll('span');
+            playSound('typeBackstabSound');
         
             for (let i = placeholders.length -1; i >= 0; i--) {
                 if (placeholders[i].textContent !== '_' && placeholders[i].style.color == 'white') {
@@ -396,13 +407,15 @@ class App {
             fogCtx.fill();
             fogCtx.globalCompositeOperation = 'source-over';
         
+            playSound('revealSound');
             checkVisibility(); 
         }
         
         function increaseConfidenceBar() {
             const confidenceBar = document.querySelector('.confidence-bar');
             const confidenceBarContainer = document.querySelector('.confidence-bar-container');
-
+            playSound('confidenceIncreaseSound');
+            
             if (totalWhiteChars > 0) {
                 const percentage = (1 - (totalWhiteChars / word.length)) * 100;
                 confidenceBar.style.height = `${percentage}%`;

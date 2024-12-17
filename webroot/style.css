@@ -25,12 +25,12 @@ body {
   justify-content: center;
   align-items: center;
   padding: 5px;
-  background: linear-gradient(to right, #ff6666, #ff4444); /* Smooth gradient */
+  background: linear-gradient(to right, #ff6666, #ff4444); 
   border-bottom: 2px solid white;
   gap: 5px;
   width: 100%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
-  border-radius: 5px; /* Rounded corners for a smoother look */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); 
+  border-radius: 5px; 
 }
 
 .content-area {
@@ -200,6 +200,7 @@ canvas {
   font-weight: bold;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
 }
+
 
 .timer-display {
   font-size: 1.5rem;
