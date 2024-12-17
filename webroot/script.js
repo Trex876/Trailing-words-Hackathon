@@ -219,6 +219,7 @@ class App {
                 consecutiveWinCount++;
                 score += 5; 
             } else{
+                playSound('LossSound');
                 resetDifficulty()
                 score = 0;
                 consecutiveWinCount = 0;
@@ -406,8 +407,7 @@ class App {
             fogCtx.arc(x, y, revealRadius, 0, Math.PI * 2);
             fogCtx.fill();
             fogCtx.globalCompositeOperation = 'source-over';
-        
-            playSound('revealSound');
+
             checkVisibility(); 
         }
         
@@ -415,7 +415,7 @@ class App {
             const confidenceBar = document.querySelector('.confidence-bar');
             const confidenceBarContainer = document.querySelector('.confidence-bar-container');
             playSound('confidenceIncreaseSound');
-            
+
             if (totalWhiteChars > 0) {
                 const percentage = (1 - (totalWhiteChars / word.length)) * 100;
                 confidenceBar.style.height = `${percentage}%`;
@@ -431,6 +431,7 @@ class App {
         function fillIncompleteWord(character, index) {
             const incompleteWordContainer = document.getElementById('incompleteWord');
             const placeholders = incompleteWordContainer.querySelectorAll('span');
+            playSound('typeBackstabSound');
  
             for (let i = 0; i < placeholders.length; i++) {
                 if (placeholders[i].textContent === '_') {
